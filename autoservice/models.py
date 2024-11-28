@@ -50,7 +50,7 @@ class Paslauga(models.Model):
 
 class Uzsakymo_eilute(models.Model):
     paslauga = models.ForeignKey(Paslauga, on_delete=models.CASCADE)
-    uzsakymas = models.ForeignKey(Uzsakymas, on_delete=models.CASCADE)
+    uzsakymas = models.ForeignKey(Uzsakymas, on_delete=models.CASCADE )
     kiekis = models.CharField('Kiekis',max_length=100)
 
     def __str__(self):
