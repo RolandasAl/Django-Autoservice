@@ -20,15 +20,26 @@ class Automobilis(models.Model):
     klientas = models.CharField('Klientas', max_length=200)
 
     def __str__(self):
-         return f'{self.valstybinis_nr}  (VIN {self.vin_kodas})'
+         return f'{self.valstybinis_nr}  (VIN {self.vin_kodas})   {self.automobilio_modelis}'
 
     class Meta:
         verbose_name = 'Automobilis'
         verbose_name_plural = 'Automobiliai'
 
+class Busena(models.Model):
+    pavadinimas = models.CharField('Būsena', max_length=100)
+
+    def __str__(self):
+        return self.pavadinimas
+
+    class Meta:
+        verbose_name = 'Būsena'
+        verbose_name_plural = 'Būsenos'
+
 class Uzsakymas(models.Model):
     data = models.CharField('Data',max_length=100)
     automobilio = models.ForeignKey(Automobilis, on_delete=models.CASCADE)
+    status = models.ForeignKey(Busena, on_delete=models.DO_NOTHING, verbose_name='Būsena')
 
     def __str__(self):
          return f'{self.data} (Automobilio numeris {self.automobilio.valstybinis_nr})'
