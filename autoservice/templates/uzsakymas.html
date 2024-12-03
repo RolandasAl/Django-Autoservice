@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container uzsakymas">
+    <h4>Detali užsakymo informacija:</h4>
+    <ul>
+      <li>ID:  {{ uzsakymas.id }}</li>
+      <li>Data:  {{ uzsakymas.data }}</li>
+      <li>Būsena:  {{ uzsakymas.status }}</li>
+    </ul>
+      <div style="margin-left:20px;margin-top:20px">
+        <h4>Užsakymo eilutės:</h4>
+        {% for eilute in uzsakymas.uzsakymo_eilute_set.all %}
+          <hr>
+        <p><strong>Paslauga:</strong> {{ eilute.paslauga.pavadinimas }}</p>
+        <p><strong>Kaina (už vienetą):</strong> {{ eilute.paslauga.kaina }} EUR</p>
+        <p><strong>Kiekis:</strong> {{ eilute.kiekis }}</p>
+      {% empty %}
+        <p class="text-warning">Šis užsakymas neturi paslaugų.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+{% endblock %}

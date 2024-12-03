@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container automobilis">
+    <h4>Detali informacija:</h4>
+    <ul>
+        <li>Savininkas:  {{automobilis.klientas}}</li>
+        <li>Automobilio modelis:  {{automobilis.automobilio_modelis}}</li>
+        <li>Valstybinis numeris:  {{ automobilis.valstybinis_nr }}</li>
+        <li>VIN kodas:  {{automobilis.vin_kodas}}</li>
+    </ul>
+    </div>
+{% endblock %}

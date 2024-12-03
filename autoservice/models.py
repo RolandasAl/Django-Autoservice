@@ -14,7 +14,7 @@ class Automobilio_modelis(models.Model):
         verbose_name_plural = 'Automobilio modeliai'
 
 class Automobilis(models.Model):
-    valstybinis_nr = models.CharField('Valstybinis Nr.',max_length=100)
+    valstybinis_nr = models.CharField('Valstybinis Nr.',max_length=100,unique=True)
     automobilio_modelis = models.ForeignKey(Automobilio_modelis, on_delete=models.CASCADE)
     vin_kodas = models.CharField('VIN kodas', max_length=50)
     klientas = models.CharField('Klientas', max_length=200)
