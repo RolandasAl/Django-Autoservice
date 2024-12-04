@@ -18,6 +18,7 @@ class Automobilis(models.Model):
     automobilio_modelis = models.ForeignKey(Automobilio_modelis, on_delete=models.CASCADE)
     vin_kodas = models.CharField('VIN kodas', max_length=50)
     klientas = models.CharField('Klientas', max_length=200)
+    nuotrauka = models.ImageField('Nuotrauka', upload_to='automobiliai', null=True, blank=True)
 
     def __str__(self):
          return f'{self.valstybinis_nr}  (VIN {self.vin_kodas})   {self.automobilio_modelis}'

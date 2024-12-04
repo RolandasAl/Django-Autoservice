@@ -1,9 +1,49 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+  <!-- Automobilių sąrašas -->
   <h1>Automobiliai</h1>
-  <p>Šiuom metu užsiregistravę automobiliai:</p>
-  {% for automobilis in automobiliai %}
-    <li><a href="{% url 'automobilis' automobilis.id %}">{{automobilis.automobilio_modelis}} </a></li>
+  <p>Šiuo metu užsiregistravę automobiliai:</p>
+
+  <div class="row">
+    {% for automobilis in automobiliai %}
+      <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card mb-4 shadow-sm">
+          {% if automobilis.nuotrauka %}
+            <img src="{{ automobilis.nuotrauka.url }}" class="card-img-top" alt="{{ automobilis.automobilio_modelis }}">
+          {% else %}
+            <img src="{% static 'img/no-image.png' %}" class="card-img-top" alt="Nėra nuotraukos">
+          {% endif %}
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">{{ automobilis.gamintojas }}</h6>
+            <p class="card-text">
+              <a href="{% url 'automobilis' automobilis.id %}">{{ automobilis.automobilio_modelis }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
     {% endfor %}
+  </div>
+
+  <!-- Paginacija -->
+  <div class="container puslapiai">
+    <nav aria-label="Puslapiavimo navigacija">
+      {% if automobiliai.has_other_pages %}
+        <ul class="pagination pagination-sm justify-content-end">
+          {% for i in automobiliai.paginator.page_range %}
+            {% if automobiliai.number == i %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ i }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+  </div>
 {% endblock %}
