@@ -3,6 +3,7 @@
 {% block content %}
     <div class="container automobilis">
     <h4>Detali informacija:</h4>
+        <img src="{{ automobilis.nuotrauka.url }}" style="margin-bottom: 20px;">
     <ul>
         <li>Savininkas:  {{automobilis.klientas}}</li>
         <li>Automobilio modelis:  {{automobilis.automobilio_modelis}}</li>

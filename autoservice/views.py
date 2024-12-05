@@ -11,10 +11,13 @@ def index(request):
     num_uzsakymu = Uzsakymas.objects.filter(status__pavadinimas='Įvykdytas').count()
 
     # perduodame informaciją į šabloną žodyno pavidale:
+    num_visits = request.session.get('num_visits', 1)
+    request.session['num_visits'] = num_visits + 1
     context = {
         'paslaugos': num_paslauga,
         'uzsakymai': num_uzsakymu,
-        'automobiliai': num_automobiliai
+        'automobiliai': num_automobiliai,
+        'num_visits': num_visits,
     }
 
     # renderiname index.html, su duomenimis kintamąjame context
