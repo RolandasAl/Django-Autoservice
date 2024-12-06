@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render,get_object_or_404
@@ -54,3 +55,13 @@ def search(request):
     query = request.GET.get('query')
     search_results = Automobilis.objects.filter(Q(klientas__icontains=query) | Q(valstybinis_nr__icontains=query) | Q(automobilio_modelis__modelis__icontains=query) | Q(vin_kodas__icontains=query) |Q(automobilio_modelis__marke__icontains=query))
     return render(request, 'search.html', {'automobiliai': search_results, 'query': query})
+
+class User_uzsakymas(LoginRequiredMixin,generic.ListView):
+    model = Uzsakymas
+    template_name = 'user_uzsakymai.html'
+    context_object_name = 'uzsakymu_sarasas'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Uzsakymas.objects.filter(reader=self.request.user, status__pavadinimas='Įvykdytas').order_by('terminas')
+

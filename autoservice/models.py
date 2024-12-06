@@ -1,4 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
+from datetime import date
+
+from tinymce.models import HTMLField
+
 
 # Create your models here.
 
@@ -19,6 +24,7 @@ class Automobilis(models.Model):
     vin_kodas = models.CharField('VIN kodas', max_length=50)
     klientas = models.CharField('Klientas', max_length=200)
     nuotrauka = models.ImageField('Nuotrauka', upload_to='automobiliai', null=True, blank=True)
+    description = HTMLField(default='Sveiki!')
 
     def __str__(self):
          return f'{self.valstybinis_nr}  (VIN {self.vin_kodas})   {self.automobilio_modelis}'
@@ -41,6 +47,15 @@ class Uzsakymas(models.Model):
     data = models.CharField('Data',max_length=100)
     automobilio = models.ForeignKey(Automobilis, on_delete=models.CASCADE)
     status = models.ForeignKey(Busena, on_delete=models.DO_NOTHING, verbose_name='Būsena')
+    reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    terminas = models.DateField('Grąžinti iki', null=True, blank=True)
+
+    @property
+    def is_overdue(self):
+        if self.terminas and date.today() > self.terminas:
+            return True
+        return False
+
 
     def __str__(self):
          return f'{self.data} (Automobilio numeris {self.automobilio.valstybinis_nr})'

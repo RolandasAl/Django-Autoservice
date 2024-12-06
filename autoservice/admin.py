@@ -8,7 +8,7 @@ class UzsakymoEiluteInline(admin.TabularInline):
     extra = 0
 
 class UzsakymasAdmin(admin.ModelAdmin):
-    list_display = ('automobilio','data')
+    list_display = ('automobilio','data','reader','terminas')
     inlines = [UzsakymoEiluteInline]
 
 class AutomobilisAdmin(admin.ModelAdmin):
@@ -25,6 +25,6 @@ admin.site.register(Automobilis,AutomobilisAdmin)
 admin.site.register(Paslauga,PaslaugaAdmin)
 admin.site.register(Uzsakymo_eilute)
 admin.site.register(Uzsakymas,UzsakymasAdmin)
-# admin.site.register(Busena)
+admin.site.register(Busena)
 
 
