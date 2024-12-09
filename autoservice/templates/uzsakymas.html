@@ -4,21 +4,48 @@
   <div class="container uzsakymas">
     <h4>Detali užsakymo informacija:</h4>
     <ul>
-      <li>ID:  {{ uzsakymas.id }}</li>
-      <li>Data:  {{ uzsakymas.data }}</li>
-      <li>Būsena:  {{ uzsakymas.status }}</li>
+      <li><strong>ID:</strong> {{ uzsakymas.id }}</li>
+      <li><strong>Data:</strong> {{ uzsakymas.data }}</li>
+      <li><strong>Būsena:</strong> {{ uzsakymas.status }}</li>
     </ul>
-      <div style="margin-left:20px;margin-top:20px">
-        <h4>Užsakymo eilutės:</h4>
+
+    <div style="margin-left: 20px; margin-top: 20px;">
+      <h4>Užsakymo eilutės:</h4>
+      {% if uzsakymas.uzsakymo_eilute_set.exists %}
         {% for eilute in uzsakymas.uzsakymo_eilute_set.all %}
           <hr>
-        <p><strong>Paslauga:</strong> {{ eilute.paslauga.pavadinimas }}</p>
-        <p><strong>Kaina (už vienetą):</strong> {{ eilute.paslauga.kaina }} EUR</p>
-        <p><strong>Kiekis:</strong> {{ eilute.kiekis }}</p>
-      {% empty %}
-        <p class="text-warning">Šis užsakymas neturi paslaugų.</p>
+          <p><strong>Paslauga:</strong> {{ eilute.paslauga.pavadinimas }}</p>
+          <p><strong>Kaina (už vienetą):</strong> {{ eilute.paslauga.kaina }} EUR</p>
+          <p><strong>Kiekis:</strong> {{ eilute.kiekis }}</p>
         {% endfor %}
-      </div>
+      {% else %}
+        <p class="text-warning">Šis užsakymas neturi paslaugų.</p>
+      {% endif %}
     </div>
+  </div>
 
+  <div style="margin-top: 20px;">
+    <h4>Atsiliepimai:</h4>
+    {% if uzsakymas.uzsakymoatsiliepimas_set.exists %}
+      {% for review in uzsakymas.uzsakymoatsiliepimas_set.all %}
+        <hr>
+        <p><strong>Klientas:</strong> {{ review.reviewer }} <strong>Data:</strong> {{ review.date_created}}</p>
+        <p>{{ review.content }}</p>
+      {% endfor %}
+    {% else %}
+      <p class="text-warning">Užsakymas neturi atsiliepimų.</p>
+    {% endif %}
+      {% if user.is_authenticated %}
+  <div class="fieldWrapper">
+    <hr><br/>
+    <h4>Palikite atsiliepimą:</h4>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form.content }}</br>
+      <input type="submit" value="Išsaugoti">
+    </form>
+  </div>
+  {% endif %}
+  </div>
 {% endblock %}
+}

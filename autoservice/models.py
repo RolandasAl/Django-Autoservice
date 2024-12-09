@@ -88,9 +88,16 @@ class Uzsakymo_eilute(models.Model):
         verbose_name_plural = 'Užsakymų eilutės'
 
 
+class UzsakymoAtsiliepimas(models.Model):
+    uzsakymas = models.ForeignKey('Uzsakymas', on_delete=models.SET_NULL, null=True, blank=True)
+    reviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    content = models.TextField('Atsiliepimas', max_length=2000)
 
-
-
+    class Meta:
+        verbose_name = "Atsiliepimas"
+        verbose_name_plural = 'Atsiliepimai'
+        ordering = ['-date_created']
 
 
 
