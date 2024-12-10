@@ -3,6 +3,7 @@
 {% block content %}
   <div class="container uzsakymas">
     <h4>Detali užsakymo informacija:</h4>
+    <img class="rounded-circle" src="{{uzsakymas.reader.profilis.nuotrauka.url}}">
     <ul>
       <li><strong>ID:</strong> {{ uzsakymas.id }}</li>
       <li><strong>Data:</strong> {{ uzsakymas.data }}</li>
@@ -29,7 +30,9 @@
     {% if uzsakymas.uzsakymoatsiliepimas_set.exists %}
       {% for review in uzsakymas.uzsakymoatsiliepimas_set.all %}
         <hr>
+
         <p><strong>Klientas:</strong> {{ review.reviewer }} <strong>Data:</strong> {{ review.date_created}}</p>
+      <img class="rounded-circle" src="{{review.reviewer.profilis.nuotrauka.url}}">
         <p>{{ review.content }}</p>
       {% endfor %}
     {% else %}

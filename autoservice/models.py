@@ -1,3 +1,4 @@
+from PIL import Image
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import date
@@ -99,7 +100,24 @@ class UzsakymoAtsiliepimas(models.Model):
         verbose_name_plural = 'Atsiliepimai'
         ordering = ['-date_created']
 
+class Profilis(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nuotrauka = models.ImageField(default="profile_pics/default.jpg", upload_to="profile_pics")
 
+    def __str__(self):
+        return f"{self.user.username} profilis"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.nuotrauka.path)
+        if img.height > 150 or img.width > 150:
+            output_size = (150, 150)
+            img.thumbnail(output_size)
+            img.save(self.nuotrauka.path)
+
+    class Meta:
+        verbose_name = 'Profilis'
+        verbose_name_plural = 'Profiliai'
 
 
 
