@@ -33,9 +33,11 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'login'%}">Prisijungti</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'register'%}">Registruotis</a></li>
           {% endif %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'mano_uzsakymas_naujas'%}?next=/autoservice">Naujas</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Pradžia</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'automobiliai' %}">Visi automobiliai</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'uzsakymai' %}">Visi užsakymai</a></li>
+
       </ul>
       <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
         <input class="form-control me-2" name="query" type="text" placeholder="Paieška">

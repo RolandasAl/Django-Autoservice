@@ -9,6 +9,8 @@
       {% for uzsakymas in uzsakymu_sarasas %}
       <li class="{% if uzsakymas.is_overdue %}text-danger{% endif %}">
         Automobilis: <a href="{% url 'uzsakymo_info' uzsakymas.pk %}">{{uzsakymas.automobilio.automobilio_modelis}}  {{uzsakymas.automobilio.valstybinis_nr}} ------{{uzsakymas.status}} </a>
+          <br/>
+        <a class="btn btn-primary" href="{{ uzsakymas.pk }}" role="button">Peržiūrėti</a>
       </li>
       {% endfor %}
     </ul>

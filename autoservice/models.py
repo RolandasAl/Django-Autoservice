@@ -51,6 +51,7 @@ class Uzsakymas(models.Model):
     reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     terminas = models.DateField('Grąžinti iki', null=True, blank=True)
 
+
     @property
     def is_overdue(self):
         if self.terminas and date.today() > self.terminas:

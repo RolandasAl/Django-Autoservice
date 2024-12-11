@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render,get_object_or_404,reverse
 from django.views import generic
-from django.views.generic.edit import FormMixin
-from .forms import UzsakymasReviewForm
+from django.views.generic.edit import FormMixin, CreateView, UpdateView, DeleteView
+from .forms import UzsakymasReviewForm, UserUzsakymasCreateForm
 from .models import Automobilio_modelis, Automobilis, Paslauga,Uzsakymo_eilute,Uzsakymas,Busena
 from django.shortcuts import redirect
 from django.contrib.auth.forms import User
@@ -92,7 +92,7 @@ class User_uzsakymas(LoginRequiredMixin,generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return Uzsakymas.objects.filter(reader=self.request.user, status__pavadinimas='Įvykdytas').order_by('terminas')
+        return Uzsakymas.objects.filter(reader=self.request.user).order_by('terminas')
 
 @csrf_protect
 def register(request):
@@ -148,3 +148,43 @@ def profilis(request):
         'p_form': p_form,
     }
     return render(request, 'profilis.html', context)
+
+
+class UzsakymasByUserDetailView(LoginRequiredMixin, Uzsakymo_info):
+    model = Uzsakymas
+    template_name = 'user_uzsakymas.html'
+
+class OrderByUserCreateView(LoginRequiredMixin, CreateView):
+    model = Uzsakymas
+    # fields = [ 'automobilio','terminas','status']
+    success_url = "/autoservice/myorders/"
+    template_name = 'user_order_form.html'
+    form_class = UserUzsakymasCreateForm
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        return super().form_valid(form)
+
+
+class OrderByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Uzsakymas
+    fields = ['automobilio','terminas']
+    success_url = "/autoservice/myorders/"
+    template_name = 'user_order_form.html'
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        Uzsakymas = self.get_object()
+        return self.request.user == Uzsakymas.reader
+
+class OrderByUserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Uzsakymas
+    success_url = "/autoservice/myorders/"
+    template_name = 'user_order_delete.html'
+
+    def test_func(self):
+        Uzsakymas = self.get_object()
+        return self.request.user == Uzsakymas.reader
